@@ -1,23 +1,34 @@
 import cv2
 import argparse
 import numpy as np
+from picamera import PiCamera
+from time import sleep, time
+import api
 
 # args
 ap = argparse.ArgumentParser()
-ap.add_argument('-i', '--image', required=True,
+ap.add_argument('-i', '--image', required=False,
                 help = 'path to input image')
-ap.add_argument('-c', '--config', required=True,
+ap.add_argument('-c', '--config', required=False,
                 help = 'path to yolo config file')
-ap.add_argument('-w', '--weights', required=True,
+ap.add_argument('-w', '--weights', required=False,
                 help = 'path to yolo pre-trained weights')
-ap.add_argument('-cl', '--classes', required=True,
+ap.add_argument('-cl', '--classes', required=False,
                 help = 'path to text file containing class names')
 args = ap.parse_args()
 
 #SETUP
 
-# read image
-image = cv2.imread(args.image)
+#loadClasses = "~/Desktop/detection/yolo_take2/yolov3.txt"
+#config = "~/Desktop/detection/yolo_take2/yolov3.cfg"
+#weights = "~/Desktop/detection/yolo_take2/yolov3.weights"
+
+# take image
+
+camera = PiCamera()
+camera.capture('cap.jpg')
+
+image = cv2.imread('cap.jpg')
 
 Width = image.shape[1]
 Height = image.shape[0]
@@ -52,8 +63,8 @@ def get_output_layers(net):
 def draw_bounding_box(img, class_id, confidence, x, y, x_plus_w, y_plus_h):
     label = str(classes[class_id])
     color = COLORS[class_id]
-    cv2.rectangle(img, (x,y), (x_plus_w, y_plus_h), color, 2)
-    cv2.putText(img, label, (x-10, y-10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, color, 2)
+    cv2.rectangle(img, (int(x),int(y)), (int(x_plus_w), int(y_plus_h)), color, 2)
+    cv2.putText(img, label, (int(x-10), int( y-10)), cv2.FONT_HERSHEY_SIMPLEX, 0.5, color, 2)
 
 #READY TO ACTUALLY DO SOMETHING
 outs = net.forward(get_output_layers(net))
@@ -92,6 +103,7 @@ for out in outs:
 indices = cv2.dnn.NMSBoxes(boxes, confidences, conf_threshold, nms_threshold)
 
 # go through the detections remaining after nms and draw some boxes yeaaaaa
+count = 0
 for i in indices:
     i = i[0]
     box = boxes[i]
@@ -100,10 +112,14 @@ for i in indices:
     w = box[2]
     h = box[3]
 
+    if classes[class_ids[i]] == 'truck' or classes[class_ids[i]] == 'car':
+        count = count + 1
     draw_bounding_box(image, class_ids[i], confidences[i], round(x), round(y), round(x+w), round(y+h))
 
 # display the image
-cv2.imshow("object detection", image)
-cv2.waitKey()
-cv2.imwrite("result.jpg", image)
-cv2.destroyAllWindows()
+#cv2.imshow("object detection", image)
+#cv2.waitKey()
+cv2.imwrite("~/Desktop/detection/yolo_take2/result.jpg", image)
+#cv2.destroyAllWindows()
+    
+res = api.update_sensor(1, {'cars': count, 'lastUpdated': time()})
