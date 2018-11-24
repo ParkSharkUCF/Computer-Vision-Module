@@ -125,12 +125,13 @@ def detect():
         center = ((x+x+w)/2, (y +y+h)/2)
         #cv2.line(image, (round(center[0]), 5000), (round(center[0]), 0), (0, 255, 0), 2)
 
-        if 0 < center[0] < bound1:
-            spot1 = 1
-        elif bound1 < center[0] < bound2:
-            spot2 = 1
-        elif bound2 < center[0] < Width:
-            spot3 = 1
+        if str(classes[class_ids[i]]) == "car" or str(classes[class_ids[i]]) == "truck":
+            if 0 < center[0] < bound1:
+                spot1 = 1
+            elif bound1 < center[0] < bound2:
+                spot2 = 1
+            elif bound2 < center[0] < Width:
+                spot3 = 1
 
         # print(center)
         #
