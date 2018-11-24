@@ -67,8 +67,8 @@ def get_output_layers(net):
 # function to draw bounding boxes
 def draw_bounding_box(img, class_id, confidence, x, y, x_plus_w, y_plus_h):
     label = str(classes[class_id])
-    cv2.rectangle(img, (x,y), (x_plus_w, y_plus_h), (0, 255, 0), 2)
-    cv2.putText(img, label, (x-10, y-10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
+    cv2.rectangle(img, (int(x),int(y)), (int(x_plus_w), int(y_plus_h)), (0, 255, 0), 2)
+    cv2.putText(img, label, (int(x)-10, int(y)-10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
 
 
 def detect():
@@ -164,6 +164,6 @@ def detect():
                                                                         ]});
 
 if __name__ == "__main__":
-    while(1):
-        detect()
-        sleep(1)
+    #while(1):
+    detect()
+    #    sleep(1)
