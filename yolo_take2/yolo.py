@@ -151,7 +151,8 @@ def detect():
     #cv2.line(image, (2000, 5000), (2000, 0), (0, 255, 0), 2)
 
     # save the result image
-    cv2.imwrite("~/Desktop/detection/yolo_take2/result.jpg", image)
+    # cv2.imwrite("~/Desktop/detection/yolo_take2/result.jpg", image)
+    cv2.imwrite("./res.jpg", image)
 
     res = api.update_sensor("1C", {'garage': "C", 'cars': count, 'lastUpdated': time(), 'spots': [{
                                                                             'spotID': 1, 'occupied': spot1
