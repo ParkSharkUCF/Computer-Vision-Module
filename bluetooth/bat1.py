@@ -22,10 +22,10 @@ class AnyDevice(gatt.Device):
 
     def characteristic_value_updated(self, characteristic, value):
         print("printy print:", (value[0]))
-        res = api.update_sensor("4C", {'batLevel': value[0]});
+        res = api.update_sensor("3C", {'batLevel': value[0]});
         manager.stop()
 
 
-device = AnyDevice(mac_address='D1:48:F2:47:A4:06', manager=manager)
+device = AnyDevice(mac_address='D6:43:18:ED:C3:0F', manager=manager)
 device.connect()
 manager.run()

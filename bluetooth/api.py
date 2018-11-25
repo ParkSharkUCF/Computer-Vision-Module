@@ -21,6 +21,10 @@ class parkApi:
         url = parkApi.url +'sensor/' + str(id)
         return self.patch_request(url, body)
 
+    def getGarageByName(self, name):
+        url = parkApi.url + 'garage/' + str(name)
+        return self.get_request(url)
+
     def post_request(self, url, body):
         try:
             r = requests.post(url, json=body)
@@ -78,3 +82,22 @@ def retrieve_all_sensors():
 def update_sensor(id, body):
     api = parkApi()
     return api.updateSensorByID(id, body)
+
+def retrieve_garage(name):
+    api = parkApi()
+    return api.getGarageByName(name)
+
+def getPercentFullGarage(name):
+    # get the garage
+    res = retrieve_garage("C")
+    totalSpots = res['garage'][0]['totalSpots']
+
+    # grab sensors array
+    sensors = res['garage'][0]['sensors']
+    occupied = 0
+    for sensor in sensors:
+        # get individual sensors
+        res = retrieve_sensor(sensor)
+        occupied = occupied + res['sensor'][0]['cars']
+
+    return (occupied/totalSpots)

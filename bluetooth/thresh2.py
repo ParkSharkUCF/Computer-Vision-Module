@@ -35,6 +35,6 @@ class AnyDevice(gatt.Device):
 
 
 
-device = AnyDevice(mac_address='D1:48:F2:47:A4:06', manager=manager)
+device = AnyDevice(mac_address='D1:C6:CC:9D:30:72', manager=manager)
 device.connect()
 manager.run()
