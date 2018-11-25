@@ -16,20 +16,19 @@ class AnyDevice(gatt.Device):
             c for c in spot_service.characteristics
             if c.uuid == '00001525-1212-efde-1523-785feabcd123')
 
-       
- 
+
         spot_characteristic.read_value()
-        
+
 
     def characteristic_value_updated(self, characteristic, value):
         print("printy print:", value[0])
-        res = api.update_sensor("2C", {'cars': value[0], 'lastUpdated': time()})
-        manager.stop()        
+        res = api.update_sensor("2C", {'cars': value[0], 'lastUpdated': time(), 'spots': [{
+                                                                    'spotID': 4, 'occupied': value[0]
+                                                                    }
+                                                                ]});
+        manager.stop()
 
 
 device = AnyDevice(mac_address='D1:C6:CC:9D:30:72', manager=manager)
 device.connect()
 manager.run()
-
-    
-    
