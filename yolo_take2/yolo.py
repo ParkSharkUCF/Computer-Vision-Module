@@ -39,8 +39,8 @@ scale = 0.00392
 
 # bounds for spot id calculation if only looking at 3 spots
 # would need 4th bound if looking at 4 spots
-bound1 = 1500
-bound2 = 2800
+bound1 = 200
+bound2 = 440
 
 # read class names
 classes = None
@@ -147,12 +147,12 @@ def detect():
 
         draw_bounding_box(image, class_ids[i], confidences[i], round(x), round(y), round(x+w), round(y+h))
 
-    #cv2.line(image, (1000, 5000), (1000, 0), (0, 255, 0), 2)
-    #cv2.line(image, (2000, 5000), (2000, 0), (0, 255, 0), 2)
+    cv2.line(image, (bound1, Height), (bound1, 0), (0, 255, 0), 2)
+    cv2.line(image, (bound2, Height), (bound2, 0), (0, 255, 0), 2)
 
     # save the result image
-    cv2.imwrite("~/Desktop/detection/yolo_take2/result.jpg", image)
-    # cv2.imwrite("./res.jpg", image)
+    #cv2.imwrite("~/Desktop/detection/yolo_take2/res.jpg", image)
+    cv2.imwrite("./res.jpg", image)
 
     res = api.update_sensor("1C", {'garage': "C", 'cars': count, 'lastUpdated': time(), 'spots': [{
                                                                             'spotID': 1, 'occupied': spot1
