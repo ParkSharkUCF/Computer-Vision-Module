@@ -3,7 +3,7 @@ import argparse
 import numpy as np
 import api
 
-from picamera import PiCamera
+#from picamera import PiCamera
 from time import sleep, time
 
 # args
@@ -25,10 +25,10 @@ args = ap.parse_args()
 #weights = "~/Desktop/detection/yolo_take2/yolov3.weights"
 
 # take image
-camera = PiCamera()
-camera.capture('cap.jpg')
+#camera = PiCamera()
+#camera.capture('cap.jpg')
 
-image = cv2.imread('cap.jpg')
+image = cv2.imread('pls.jpg')
 
 Width = image.shape[1]
 Height = image.shape[0]
@@ -39,8 +39,8 @@ scale = 0.00392
 
 # bounds for spot id calculation if only looking at 3 spots
 # would need 4th bound if looking at 4 spots
-bound1 = 200
-bound2 = 440
+bound1 = 1000
+bound2 = 2000
 
 # read class names
 classes = None
@@ -166,6 +166,4 @@ def detect():
                                                                         ]});
 
 if __name__ == "__main__":
-    #while(1):
     detect()
-    #    sleep(1)
